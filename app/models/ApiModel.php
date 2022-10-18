@@ -1,22 +1,21 @@
 <?php
 class ApiModel extends Model {
-    public function getProductsByFilters() {
+    public function saveUser($data) {
         if($this->db->connect_errno === 0) {
-            $category_id = $_SESSION['category_id'] ? " AND products_categories.category_id=".$_SESSION['category_id'] : '';
-            $order_by = $_SESSION['order_by'] ? " ORDER BY ".$_SESSION['order_by'] : '';
-            $query = "SELECT products.id, products.name, products.price, products.date FROM products, products_categories WHERE products.id = products_categories.product_id".$category_id.$order_by;
-            $res = $this->db->query($query);
-            if($res) {
-                return $res->fetch_all(MYSQLI_ASSOC);
-            } else {
-                return false;
-            }
+            $telegram_id = (int)$data['from']['id'];
+            $first_name = $data['from']['first_name'];
+            $last_name = $data['from']['last_name'];
+            $first_name = mysqli_real_escape_string($this->db, $first_name);
+            $last_name = mysqli_real_escape_string($this->db, $last_name);
+            $query="INSERT INTO users(telegram_id, first_name, last_name) VALUES('$telegram_id', '$first_name','$last_name');";
+            $this->db->query($query);
+            return $this->db->insert_id;
         }
     }
 
-    public function getProduct($id) {
+    public function getUser($id) {
         if($this->db->connect_errno === 0) {
-            $query = "SELECT * FROM products WHERE id=".(int)$id;
+            $query = "SELECT * FROM users WHERE telegram_id=".(int)$id;
             $res = $this->db->query($query);
             if($res) {
                 return $res->fetch_all(MYSQLI_ASSOC);

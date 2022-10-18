@@ -9,11 +9,10 @@ class Router {
         $message = $data['text'] ? $data['text'] : $data['data'];
         switch($message) {
             case '/start':
-                $send_data = [
-                    'method' => 'sendMessage',
-                    'text' => /*'just answer '.$message*/'Hello '.$data['from']['first_name'].' '.$data['from']['last_name'],
-                    'chat_id' => $data['chat']['id']
-                ];
+                include 'app/models/ApiModel.php';
+                include 'app/controllers/ApiController.php';
+                $controller = new ApiController();
+                $controller->action_start($data);
                 break;
             default:
                 $send_data = [
@@ -21,9 +20,9 @@ class Router {
                     'text' => 'command does not exsit',
                     'chat_id' => $data['chat']['id']
                 ];
+                $res = Router::sendTelegram($send_data['method'], $send_data);
                 break;
         }
-        $res = Router::sendTelegram($send_data['method'], $send_data);
         /*$controller_name = 'main';
         $action_name = 'products';
         $routes = explode('/', $_SERVER['REQUEST_URI']);
