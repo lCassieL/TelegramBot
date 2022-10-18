@@ -52,12 +52,12 @@ class Router {
             CURLOPT_HEADER => 0,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => 'https://api.telegram.org/bot' . Router::$TOKEN . '/' . $method,
-            CURLOPT_POSTFIELDS => json_encode($date),
+            CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array_merge(array("Content-Type: application/json"), $headers)
         ]);
         $result = curl_exec($curl);
         curl_close($curl);
-        return(json_decode($resuult, 1) ? json_decode($result, 1) : $result);
+        return $result;
     }
     
     static function ErrorPage404() {
