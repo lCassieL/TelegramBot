@@ -3,16 +3,19 @@ class Router {
     static $TOKEN = '5433286804:AAFFPCWGMsjJhiR89TTRO3e2e-_lOnc-8C0';
     static function init() {
         $data = json_decode(file_get_contents('php://input'), TRUE);
+        var_export($data);
         $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
         //$message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']), 'utf-8');
         $message = $data['text'] ? $data['text'] : $data['data'];
+        var_export($message);
         $send_data = [
             'method' => 'sendMessage',
             'text' => 'just answer '.$message,
             'chat_id' => $data['chat']['id']
         ];
-
+        var_export($send_data);
         $res = Router::sendTelegram($send_data['method'], $send_data);
+        var_export($res);
         /*$controller_name = 'main';
         $action_name = 'products';
         $routes = explode('/', $_SERVER['REQUEST_URI']);
