@@ -5,8 +5,8 @@ class ApiModel extends Model {
             $telegram_id = (int)$data['from']['id'];
             $first_name = $data['from']['first_name'];
             $last_name = $data['from']['last_name'];
-            $first_name = mysqli_real_escape_string($this->db, $first_name);
-            $last_name = mysqli_real_escape_string($this->db, $last_name);
+            /*$first_name = mysqli_real_escape_string($this->db, $first_name);
+            $last_name = mysqli_real_escape_string($this->db, $last_name);*/
             $query="INSERT INTO users(telegram_id, first_name, last_name) VALUES('$telegram_id', '$first_name','$last_name');";
             $this->db->query($query);
             return $this->db->insert_id;
