@@ -1,6 +1,6 @@
 <?php
 class Router {
-    public static TOKEN = '5433286804:AAFFPCWGMsjJhiR89TTRO3e2e-_lOnc-8C0';
+    static $TOKEN = '5433286804:AAFFPCWGMsjJhiR89TTRO3e2e-_lOnc-8C0';
     static function init() {
         $data = json_decode(file_get_contents('php://input'), TRUE);
         $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
@@ -50,7 +50,7 @@ class Router {
             CURLOPT_POST => 1,
             CURLOPT_HEADER => 0,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'https://api.telegram.org/bot' . Router::TOKEN . '/' . $method,
+            CURLOPT_URL => 'https://api.telegram.org/bot' . Router::$TOKEN . '/' . $method,
             CURLOPT_POSTFIELDS => json_encode($date),
             CURLOPT_HTTPHEADER => array_merge(array("Content-Type: application/json"), $headers)
         ]);
