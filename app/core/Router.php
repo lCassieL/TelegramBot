@@ -8,14 +8,21 @@ class Router {
         //$message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']), 'utf-8');
         $message = $data['text'] ? $data['text'] : $data['data'];
         switch($message) {
-            case 'start':
+            case '/start':
+                $send_data = [
+                    'method' => 'sendMessage',
+                    'text' => /*'just answer '.$message*/'Hello '.$data['from']['first_name'].' '.$data['from']['last_name'],
+                    'chat_id' => $data['chat']['id']
+                ];
+                break;
+            default:
+                $send_data = [
+                    'method' => 'sendMessage',
+                    'text' => 'command does not exsit',
+                    'chat_id' => $data['chat']['id']
+                ];
                 break;
         }
-        $send_data = [
-            'method' => 'sendMessage',
-            'text' => /*'just answer '.$message*/$test,
-            'chat_id' => $data['chat']['id']
-        ];
         $res = Router::sendTelegram($send_data['method'], $send_data);
         /*$controller_name = 'main';
         $action_name = 'products';
