@@ -15,7 +15,7 @@ class Router {
                 $data = json_decode(file_get_contents('php://input'), TRUE);
                 $send_data = [
                     'method' => 'sendMessage',
-                    'text' => 'dd '.$test,
+                    'text' => 'dd',
                     'chat_id' => '398498577'
                 ];
                 $res = Router::sendTelegram($send_data['method'], $send_data);
