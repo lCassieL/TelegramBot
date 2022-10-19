@@ -6,7 +6,7 @@ class ApiController extends Controller {
         $user ? $user : $this->model->saveUser($data);
         $send_data = [
             'method' => 'sendMessage',
-            'text' => /*'just answer '.$message*/'Hello '.$data['from']['first_name'].' '.$data['from']['last_name'],
+            'text' => 'Hello '.$data['from']['first_name'].' '.$data['from']['last_name'],
             'chat_id' => $data['chat']['id']
         ];
         Router::sendTelegram($send_data['method'], $send_data);
