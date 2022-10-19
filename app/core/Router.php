@@ -11,7 +11,11 @@ class Router {
         }
         switch($param) {
             case 'trello':
-                $test = file_get_contents('php://input');
+                include 'app/models/ApiModel.php';
+                include 'app/controllers/ApiController.php';
+                $controller = new ApiController();
+                $controller->action_trello();
+                /*$test = file_get_contents('php://input');
                 error_log($test, 4);
                 $data = json_decode(file_get_contents('php://input'), TRUE);
                 $send_data = [
@@ -19,7 +23,7 @@ class Router {
                     'text' => 'dd',
                     'chat_id' => '398498577'
                 ];
-                $res = Router::sendTelegram($send_data['method'], $send_data);
+                $res = Router::sendTelegram($send_data['method'], $send_data);*/
                 break;
             case 'telegram':
                 $data = json_decode(file_get_contents('php://input'), TRUE);
