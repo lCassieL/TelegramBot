@@ -17,12 +17,12 @@ class Router {
                 $controller->action_start($data);
                 break;
             default:
-                $send_data = [
+                /*$send_data = [
                     'method' => 'sendMessage',
                     'text' => 'command does not exsit',
                     'chat_id' => $data['chat']['id']
                 ];
-                $res = Router::sendTelegram($send_data['method'], $send_data);
+                $res = Router::sendTelegram($send_data['method'], $send_data);*/
                 break;
         }
     }
