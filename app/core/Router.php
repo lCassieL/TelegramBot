@@ -5,7 +5,7 @@ class Router {
         $test = file_get_contents('php://input');
         $data = json_decode(file_get_contents('php://input'), TRUE);
         $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
-        $message = strtolower(($data['text'] ? $data['text'] : $data['data']), 'utf-8');
+        $message = strtolower($data['text'] ? $data['text'] : $data['data']);
         switch($message) {
             case '/старт':
             case 'старт':
