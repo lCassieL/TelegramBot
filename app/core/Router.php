@@ -34,15 +34,22 @@ class Router {
                         $controller = new ApiController();
                         $controller->action_start($data);
                         break;*/
-                    default:
                         $send_data = [
+                            'method' => 'sendMessage',
+                            'text' => $data['chat']['id'],
+                            'chat_id' => $data['chat']['id']
+                             ];
+                             $res = Router::sendTelegram($send_data['method'], $send_data);
+                             break;
+                    default:
+                        /*$send_data = [
                         'method' => 'sendMessage',
                         'text' => $data['chat']['id'],
                         'chat_id' => $data['chat']['id']
                          ];
                          $res = Router::sendTelegram($send_data['method'], $send_data);
-                break;
-        }
+                         break;*/
+                }
                 break;
 
         }
