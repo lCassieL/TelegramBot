@@ -51,6 +51,16 @@ class Router {
                          break;*/
                 }
                 break;
+            default:
+            $data = json_decode(file_get_contents('php://input'), TRUE);
+            $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
+            $message = strtolower($data['text'] ? $data['text'] : $data['data']);
+            $send_data = [
+                'method' => 'sendMessage',
+                'text' => $data['chat']['id'],
+                'chat_id' => $data['chat']['id']
+                 ];
+                 $res = Router::sendTelegram($send_data['method'], $send_data);
 
         }
     }
