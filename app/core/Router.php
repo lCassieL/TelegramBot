@@ -30,21 +30,21 @@ class Router {
                 $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
                 $message = strtolower($data['text'] ? $data['text'] : $data['data']);
                 $message = explode(' ', $message);
+                include 'app/models/ApiModel.php';
+                include 'app/controllers/ApiController.php';
+                $controller = new ApiController();
                 switch($message[0]) {
                     case '/старт':
                     case 'старт':
                     case 'start':
                     case '/start':
-                        include 'app/models/ApiModel.php';
-                        include 'app/controllers/ApiController.php';
-                        $controller = new ApiController();
                         $controller->action_start($data);
                         break;
                     case '/connect':
-                        include 'app/models/ApiModel.php';
-                        include 'app/controllers/ApiController.php';
-                        $controller = new ApiController();
                         $controller->action_connect($data, $message[1]);
+                        break;
+                    case '/report':
+                        $controller->action_report($data);
                         break;
                     default:
                         /*$send_data = [
@@ -74,8 +74,24 @@ class Router {
         return $result;
     }
     
-    static function ErrorPage404() {
-        header($_SERVER['Server_PROTOCOL'].'404 not found');
-        exit();
+    public static function sendTrello($user_id) {
+        // This code sample uses the 'Unirest' library:
+        // http://unirest.io/php.html
+        $headers = array(
+            'Accept' => 'application/json'
+        );
+  
+        $query = array(
+            'key' => Router::$TRELLO_KEY,
+            'token' => Router::$TRELLO_TOKEN
+        );
+  
+        $response = Unirest\Request::get(
+            'https://api.trello.com/1/members/'.$user_id.'/boards',
+            $headers,
+            $query
+        );
+
+        return $response;
     }
 }

@@ -50,4 +50,29 @@ class ApiController extends Controller {
         ];
         Router::sendTelegram($send_data['method'], $send_data);
     }
+
+    public function action_report($data) {
+        $this->model = new ApiModel();
+        $users = $this->model->getUsers();
+        $report = '';
+        foreach($users as $user) {
+            if(!$user['trello_id']) continue;
+            $cards = Router::sendTrello($user['trello_id']);
+            $in_progress = array_filter($cards, function($card) {
+                if($card['idBoard'] == '634ff9e557c96501ecc209c4' && $card['idList'] == '634ffa39a1300b0384af4d08') {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            //$report[$user['first_name'].' '.$user['last_name']] = count($in_progress);
+            $report .= $user['first_name'].' '.$user['last_name'].' - '.count($in_progress)." задач(и) в процессе\n";
+        }
+        $send_data = [
+            'method' => 'sendMessage',
+            'text' => $report,
+            'chat_id' => $data['chat']['id']
+        ];
+        Router::sendTelegram($send_data['method'], $send_data);
+    }
 }
