@@ -25,6 +25,18 @@ class ApiModel extends Model {
         }
     }
 
+    public function getUsers(){
+        if($this->db->connect_errno === 0){
+            $query = 'SELECT * from users';
+            $res = $this->db->query($query);
+            if($res){
+                return $res->fetch_all(MYSQLI_ASSOC);
+            } else{
+                return false;
+            }
+        }
+    }
+
     public function connectToTrelloAcc($data, $trello_id) {
         if($this->db->connect_errno === 0) {
             $telegram_id = (int)$data['from']['id'];
