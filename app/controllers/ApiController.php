@@ -34,10 +34,12 @@ class ApiController extends Controller {
             $this->model = new ApiModel();
             $user = $this->model->getUser($data['from']['id']);
             if($user) {
+                error_log(json_encode($data), 4);
                 $data['from']['trello_id'] = $trello_id;
                 $this->model->connectToTrelloAcc($data, $trello_id);
                 $answer = 'аккаунт был привязан к trello';
             } else {
+                error_log(json_encode($data), 4);
                 $answer = 'вы не авторизированы, запустите команду /start';
             }
         } else {
