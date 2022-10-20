@@ -78,4 +78,20 @@ class ApiController extends Controller {
         ];
         Router::sendTelegram($send_data['method'], $send_data);
     }
+
+    public function action_actions($data) {
+        $send_data = [
+            'method' => 'sendMessage',
+            'chat_id' => CHAT_ID,
+            'reply_markup' => [
+                'resize_keyboard' => true,
+                'keyboard' => [
+                    [
+                        ['text' => 'Отчет', 'callback_data' => '/report']
+                    ]
+                ]
+            ]
+        ];
+        $res = Router::sendTelegram($send_data['method'], $send_data);
+    }
 }

@@ -31,6 +31,9 @@ class Router {
                     case '/report':
                         $controller->action_report($data);
                         break;
+                    case '/actions':
+                        $controller->action_actions($data);
+                        break;
                 }
                 break;
         }
