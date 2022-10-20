@@ -74,9 +74,7 @@ class Router {
         return $result;
     }
     
-    public static function sendTrello($user_id) {
-        // This code sample uses the 'Unirest' library:
-        // http://unirest.io/php.html
+    /*public static function sendTrello($user_id) {
         $headers = array(
             'Accept' => 'application/json'
         );
@@ -93,5 +91,45 @@ class Router {
         );
 
         return $response;
+    }*/
+
+    public static function sendTrello($user_id)
+{
+    $mathod = 'GET';
+    $url = 'https://api.trello.com/1/members/'.$user_id.'/boards';
+    $data = array(
+        'key' => Router::$TRELLO_KEY,
+        'token' => Router::$TRELLO_TOKEN
+    );
+    $curl = curl_init();
+
+    switch ($method)
+    {
+        case "POST":
+            curl_setopt($curl, CURLOPT_POST, 1);
+
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        case "PUT":
+            curl_setopt($curl, CURLOPT_PUT, 1);
+            break;
+        default:
+            if ($data)
+                $url = sprintf("%s?%s", $url, http_build_query($data));
     }
+
+    // Optional Authentication:
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
+
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+    $result = curl_exec($curl);
+
+    curl_close($curl);
+
+    return $result;
+}
 }
