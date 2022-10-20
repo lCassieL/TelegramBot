@@ -60,6 +60,7 @@ class ApiController extends Controller {
             $cards = Router::sendTrello($user['trello_id']);
             $cards = json_decode($cards);
             $in_progress = array_filter($cards, function($card) {
+                error_log(json_encode($card).' fefwfe', 4);
                 if($card->idBoard == '634ff9e557c96501ecc209c4' && $card->idList == '634ffa39a1300b0384af4d08') {
                     error_log($card->idBoard.' '.$card->idList, 4);
                     return true;
