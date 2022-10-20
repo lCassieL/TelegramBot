@@ -88,7 +88,7 @@ class ApiController extends Controller {
                 'resize_keyboard' => true,
                 'keyboard' => [
                     [
-                        ['text' => 'Отчет', 'callback_data' => '/report']
+                        ['text' => 'Отчет']
                     ]
                 ]
             ]
