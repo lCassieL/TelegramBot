@@ -23,9 +23,31 @@ class ApiController extends Controller {
             $send_data = [
                 'method' => 'sendMessage',
                 'text' => $message,
-                'chat_id' => '-843626643'//'398498577'
+                'chat_id' => /*'-843626643'*/'398498577'
             ];
             $res = Router::sendTelegram($send_data['method'], $send_data);
         }
+    }
+
+    public function action_connect($data, $trello_id) {
+        if($trello_id) {
+            $this->model = new ApiModel();
+            $user = $this->model->getUser($data['from']['id']);
+            if($user) {
+                $data['from']['trello_id'] = $trello_id;
+                $this->model->connectToTrelloAcc($data);
+                $answer = 'аккаунт был привязан к trello';
+            } else {
+                $answer = 'вы не авторизированы, запустите команду /start';
+            }
+        } else {
+            $answer = 'не указан id';
+        }
+        $send_data = [
+            'method' => 'sendMessage',
+            'text' => $answer,
+            'chat_id' => $data['chat']['id']
+        ];
+        Router::sendTelegram($send_data['method'], $send_data);
     }
 }

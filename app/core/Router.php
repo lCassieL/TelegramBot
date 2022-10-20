@@ -29,7 +29,8 @@ class Router {
                 $data = json_decode(file_get_contents('php://input'), TRUE);
                 $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
                 $message = strtolower($data['text'] ? $data['text'] : $data['data']);
-                switch($message) {
+                $message = explode(' ', $message);
+                switch($message[0]) {
                     case '/старт':
                     case 'старт':
                     case 'start':
@@ -38,6 +39,12 @@ class Router {
                         include 'app/controllers/ApiController.php';
                         $controller = new ApiController();
                         $controller->action_start($data);
+                        break;
+                    case '/connect':
+                        include 'app/models/ApiModel.php';
+                        include 'app/controllers/ApiController.php';
+                        $controller = new ApiController();
+                        $controller->action_connect($data, $message[0]);
                         break;
                     default:
                         /*$send_data = [
