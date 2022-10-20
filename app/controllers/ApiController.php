@@ -23,7 +23,7 @@ class ApiController extends Controller {
             $send_data = [
                 'method' => 'sendMessage',
                 'text' => $message,
-                'chat_id' => /*'-843626643'*/'398498577'
+                'chat_id' => CHAT_ID
             ];
             $res = Router::sendTelegram($send_data['method'], $send_data);
         }
@@ -61,7 +61,7 @@ class ApiController extends Controller {
             $cards = json_decode($cards);
             $in_progress = array_filter($cards, function($card) {
                 error_log(json_encode($card).' fefwfe', 4);
-                if($card->idBoard == '634ff9e557c96501ecc209c4' && $card->idList == '634ffa39a1300b0384af4d08') {
+                if($card->idBoard == BOARD_ID && $card->idList == COLUMN_ID) {
                     error_log($card->idBoard.' '.$card->idList, 4);
                     return true;
                 } else {
@@ -69,7 +69,6 @@ class ApiController extends Controller {
                     return false;
                 }
             });
-            //$report[$user['first_name'].' '.$user['last_name']] = count($in_progress);
             $report .= $user['first_name'].' '.$user['last_name'].' - '.count($in_progress)." задач(и) в процессе\n";
         }
         $send_data = [

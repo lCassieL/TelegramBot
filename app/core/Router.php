@@ -1,8 +1,5 @@
 <?php
 class Router {
-    static $TELEGRAM_TOKEN = '5433286804:AAFFPCWGMsjJhiR89TTRO3e2e-_lOnc-8C0';
-    static $TRELLO_TOKEN = 'e003cd71a46e8d386833b0d020602bbbd4d3902cdc0b566de60fbb84f9fb5002';
-    static $TRELLO_KEY = '593fd8ef4b57c8d736fca2d220352a96';
     static function init() {
         $routes = explode('/', $_SERVER['REQUEST_URI']);
         $param = '';
@@ -15,15 +12,6 @@ class Router {
                 include 'app/controllers/ApiController.php';
                 $controller = new ApiController();
                 $controller->action_trello();
-                /*$test = file_get_contents('php://input');
-                error_log($test, 4);
-                $data = json_decode(file_get_contents('php://input'), TRUE);
-                $send_data = [
-                    'method' => 'sendMessage',
-                    'text' => 'dd',
-                    'chat_id' => '398498577'
-                ];
-                $res = Router::sendTelegram($send_data['method'], $send_data);*/
                 break;
             case 'telegram':
                 $data = json_decode(file_get_contents('php://input'), TRUE);
@@ -34,9 +22,6 @@ class Router {
                 include 'app/controllers/ApiController.php';
                 $controller = new ApiController();
                 switch($message[0]) {
-                    case '/старт':
-                    case 'старт':
-                    case 'start':
                     case '/start':
                         $controller->action_start($data);
                         break;
@@ -46,14 +31,6 @@ class Router {
                     case '/report':
                         $controller->action_report($data);
                         break;
-                    default:
-                        /*$send_data = [
-                        'method' => 'sendMessage',
-                        'text' => $data['chat']['id'],
-                        'chat_id' => $data['chat']['id']
-                         ];
-                         $res = Router::sendTelegram($send_data['method'], $send_data);
-                         break;*/
                 }
                 break;
         }
@@ -65,7 +42,7 @@ class Router {
             CURLOPT_POST => 1,
             CURLOPT_HEADER => 0,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'https://api.telegram.org/bot' . Router::$TELEGRAM_TOKEN . '/' . $method,
+            CURLOPT_URL => 'https://api.telegram.org/bot' . TELEGRAM_TOKEN . '/' . $method,
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array_merge(array("Content-Type: application/json"), $headers)
         ]);
@@ -73,63 +50,34 @@ class Router {
         curl_close($curl);
         return $result;
     }
-    
-    /*public static function sendTrello($user_id) {
-        $headers = array(
-            'Accept' => 'application/json'
-        );
-  
-        $query = array(
-            'key' => Router::$TRELLO_KEY,
-            'token' => Router::$TRELLO_TOKEN
-        );
-  
-        $response = Unirest\Request::get(
-            'https://api.trello.com/1/members/'.$user_id.'/boards',
-            $headers,
-            $query
-        );
 
-        return $response;
-    }*/
-
-    public static function sendTrello($user_id)
-{
-    $method = 'GET';
-    $url = 'https://api.trello.com/1/members/'.$user_id.'/cards';
-    $data = array(
-        'key' => Router::$TRELLO_KEY,
-        'token' => Router::$TRELLO_TOKEN
-    );
-    $curl = curl_init();
-
-    switch ($method)
-    {
-        case "POST":
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            break;
-        case "PUT":
-            curl_setopt($curl, CURLOPT_PUT, 1);
-            break;
-        default:
-            if ($data)
-                $url = sprintf("%s?%s", $url, http_build_query($data));
+    public static function sendTrello($user_id) {
+            $method = 'GET';
+            $url = 'https://api.trello.com/1/members/'.$user_id.'/cards';
+            $data = array(
+                'key' => TRELLO_KEY,
+                'token' => TRELLO_TOKEN
+            );
+            $curl = curl_init();
+            switch ($method)
+            {
+                case "POST":
+                    curl_setopt($curl, CURLOPT_POST, 1);
+                    if ($data) curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                    break;
+                case "PUT":
+                    curl_setopt($curl, CURLOPT_PUT, 1);
+                    break;
+                default:
+                    if ($data) $url = sprintf("%s?%s", $url, http_build_query($data));
+            }
+            // Optional Authentication:
+            curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($curl, CURLOPT_USERPWD, "username:password");
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($curl);
+            curl_close($curl);
+            return $result;
     }
-
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
-
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-    $result = curl_exec($curl);
-
-    curl_close($curl);
-
-    return $result;
-}
 }
