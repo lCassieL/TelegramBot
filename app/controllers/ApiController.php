@@ -83,6 +83,7 @@ class ApiController extends Controller {
         $send_data = [
             'method' => 'sendMessage',
             'chat_id' => $data['chat']['id'],
+            'text' => 'команды',
             'reply_markup' => [
                 'resize_keyboard' => true,
                 'keyboard' => [
