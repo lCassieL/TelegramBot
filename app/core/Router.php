@@ -28,7 +28,7 @@ class Router {
                     case '/connect':
                         $controller->action_connect($data, $message[1]);
                         break;
-                    case 'Отчет':
+                    case 'отчет':
                         $controller->action_report($data);
                         break;
                     case '/actions':
