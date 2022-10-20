@@ -14,14 +14,16 @@ class ApiController extends Controller {
 
     public function action_trello() {
         $data = json_decode(file_get_contents('php://input'), TRUE);
-        if($data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list') {
-            $message = 'карточка '.$data['action']['display']['entities']['card']['text'].
-                       ' перемещена с '.$data['action']['display']['entities']['listBefore']['text'].
-                       ' в '.$data['action']['display']['entities']['listAfter']['text'];
+        $action = $data['action']['display']['translationKey'];
+        $card_name = $data['action']['display']['entities']['card']['text'];
+        $list_before = $data['action']['display']['entities']['listBefore']['text'];
+        $list_after = $data['action']['display']['entities']['listAfter']['text'];
+        if($action == 'action_move_card_from_list_to_list') {
+            $message = 'карточка '.$card_name.' перемещена с '.$list_before.' в '.$list_after;
             $send_data = [
                 'method' => 'sendMessage',
                 'text' => $message,
-                'chat_id' => '398498577'
+                'chat_id' => '-843626643'//'398498577'
             ];
             $res = Router::sendTelegram($send_data['method'], $send_data);
         }
