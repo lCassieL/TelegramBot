@@ -64,6 +64,7 @@ class ApiController extends Controller {
                     error_log($card->idBoard.' '.$card->idList, 4);
                     return true;
                 } else {
+                    error_log($card->idBoard.' '.$card->idList, 4);
                     return false;
                 }
             });
