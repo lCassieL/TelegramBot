@@ -44,7 +44,7 @@ class Router {
                         include 'app/models/ApiModel.php';
                         include 'app/controllers/ApiController.php';
                         $controller = new ApiController();
-                        $controller->action_connect($data, $message[0]);
+                        $controller->action_connect($data, $message[1]);
                         break;
                     default:
                         /*$send_data = [

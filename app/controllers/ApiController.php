@@ -35,7 +35,7 @@ class ApiController extends Controller {
             $user = $this->model->getUser($data['from']['id']);
             if($user) {
                 $data['from']['trello_id'] = $trello_id;
-                $this->model->connectToTrelloAcc($data);
+                $this->model->connectToTrelloAcc($data, $trello_id);
                 $answer = 'аккаунт был привязан к trello';
             } else {
                 $answer = 'вы не авторизированы, запустите команду /start';
