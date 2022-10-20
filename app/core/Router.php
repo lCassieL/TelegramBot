@@ -95,7 +95,7 @@ class Router {
 
     public static function sendTrello($user_id)
 {
-    $mathod = 'GET';
+    $method = 'GET';
     $url = 'https://api.trello.com/1/members/'.$user_id.'/boards';
     $data = array(
         'key' => Router::$TRELLO_KEY,
